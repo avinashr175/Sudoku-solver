@@ -1,0 +1,10 @@
+****Preprocessing******
+Did a little blurring (Gaussian blur filter) on the image to smoothen out noise
+The first thing to be done is image thresholding (to throw away information). adaptive thresholding algorithm is used for this as the img might have varying lighting (external) levels. We have a adaptive threshold for each patch (5x5 grid in our case) in the image.
+After this, dilate operation is performed to fill out cracks in the image.
+
+https://stackoverflow.com/questions/16705721/opencv-floodfill-with-mask#
+
+We iterate through the image. The >=128 condition in the code is to ensure that only the white parts are flooded. Whenever we encounter such a part, we flood it with a dark gray colour (gray level 64). So in the future, we won't be reflooding these blobs. And whenever we encounter a big blob, we note the current point and the area it has.
+
+Once we have the biggest blob, we can use canny edge detector to detect the edges and then use hough transfor to detect the lines
